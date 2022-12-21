@@ -19,13 +19,13 @@ threshold <- 6
 
 study_dates <- lst(
   
-  pfizer = lst( # pfizer dose 3
-   start_date = "2021-09-16", #start of recruitment thursday 16 september first pfizer booster jabs administered in england
-  ),
-  
-  moderna = lst( # moderna dose 3
-    start_date = "2021-10-29", #start of recruitment friday 29 october first moderna booster jabs administered in england
-  ),
+  # pfizer = lst( # pfizer dose 3
+  #  start_date = "2021-09-16", #start of recruitment thursday 16 september first pfizer booster jabs administered in england
+  # ),
+  # 
+  # moderna = lst( # moderna dose 3
+  #   start_date = "2021-10-29", #start of recruitment friday 29 october first moderna booster jabs administered in england
+  # ),
   
   # see page 21 of https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1072064/Vaccine-surveillance-report-week-17.pdf
   # vaccine uptake leveled off in all groups by end of Feb (must earlier in older groups)
