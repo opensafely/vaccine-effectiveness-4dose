@@ -13,27 +13,23 @@ actions:
   ## # # # # # # # # # # # # # # # # # # # 
   ##   
   ## # # # # # # # # # # # # # # # # # # # 
-  ## Preliminaries 
+  ## Extract and process data for exploratory analysis 
   ## # # # # # # # # # # # # # # # # # # # 
 
-  design:
-    run: r:latest analysis/design.R
-    outputs:
-      moderately_sensitive:
-        lib: lib/design/*.json
-
-  ## # # # # # # # # # # # # # # # # # # # 
-  ## Extract and process treated data 
-  ## # # # # # # # # # # # # # # # # # # # 
-
-  extract_treated:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_treated
-      --output-file output/treated/extract/input_treated.feather
-    needs:
-    - design
+  extract_exploratory:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_exploratory
+      --output-file output/exploratory/extract/input_exploratory.feather
     outputs:
       highly_sensitive:
-        extract: output/treated/extract/input_treated.feather
+        extract: output/exploratory/extract/input_exploratory.feather
+
+  sankey:
+    run: r:latest analysis/exploratory/sankey.R
+    needs:
+    - extract_exploratory
+    outputs:
+      moderately_sensitive:
+        links: output/exploratory/links.csv
 
   ## #### End #### 
 
