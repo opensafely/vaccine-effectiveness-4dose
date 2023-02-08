@@ -33,9 +33,10 @@ study = StudyDefinition(
   },
   
   population = patients.satisfying(
-    "age >= 18",
-    age = patients.age_as_of("2021-07-01")
+    "age20210701 >= 18",
   ),
+
+  age20210701 = patients.age_as_of("2021-07-01"),
 
   #################################################################
   ## Covid vaccine dates

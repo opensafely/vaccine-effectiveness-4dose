@@ -25,7 +25,7 @@ target_disease_data <- extract %>%
 
 # extract and process target_product_data
 target_product_data <- extract %>%
-  select(-starts_with("covid_vax_disease")) %>%
+  select(-starts_with("covid_vax_disease"), -age20210701) %>%
   pivot_longer(
     cols = -patient_id,
     names_to = c("descr", NA),
