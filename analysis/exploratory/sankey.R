@@ -24,6 +24,7 @@ target_disease_data <- extract %>%
   ) 
 
 # extract and process target_product_data
+cat("Derive long target_product_data\n")
 target_product_data <- extract %>%
   select(-starts_with("covid_vax_disease"), -age20210701) %>%
   pivot_longer(
@@ -33,7 +34,10 @@ target_product_data <- extract %>%
     # names_transform = list(index = as.integer),
     values_to = "date",
     values_drop_na = TRUE
-  ) %>%
+  ) 
+
+cat("Derive `index` column for target_product_data\n")
+target_product_data <- target_product_data %>%
   group_by(patient_id) %>%
   arrange(date, .by_group = TRUE) %>%
   # use dense rank rather than min_rank because >1 vaccines on the same day is
