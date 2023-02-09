@@ -1,11 +1,21 @@
 # load libraries
 library(tidyverse)
+library(glue)
 
 # define functions
 roundmid_any <- function(x, to=1){
   # like ceiling_any, but centers on (integer) midpoint of the rounding points
   ceiling(x/to)*to - (floor(to/2)*(x!=0))
 }
+
+# import vaccine product names
+vaccine_product_names <- readr::read_delim(
+  here::here("lib", "vaccine-product-names"), 
+  delim = ";", 
+  escape_double = FALSE,
+  trim_ws = TRUE
+) %>%
+  select(name, product_name)
 
 # import extracted data
 extract <- arrow::read_feather(here::here("output", "exploratory", "extract", "input_exploratory.feather")) %>%
@@ -24,20 +34,27 @@ target_disease_data <- extract %>%
   ) 
 
 # extract and process target_product_data
-cat("Derive long target_product_data\n")
-target_product_data <- extract %>%
-  select(-starts_with("covid_vax_disease"), -age20210701) %>%
-  pivot_longer(
-    cols = -patient_id,
-    names_to = c("descr", NA),
-    names_pattern = "^(.*)_(\\d+)_date",
-    # names_transform = list(index = as.integer),
-    values_to = "date",
-    values_drop_na = TRUE
-  ) 
+# do my product name to avoid hitting memory issues
+target_product_data <- list()
+for (i in seq_along(vaccine_product_names$name)) {
+  cat("\n")
+  cat(glue("{vaccine_product_names$name[i]}----"))
+  cat("\n")
+  target_product_data[[i]] <- extract %>%
+    select(patient_id, starts_with(vaccine_product_names$name[i])) %>%
+    pivot_longer(
+      cols = -patient_id,
+      names_to = c("descr", NA),
+      names_pattern = "^(.*)_(\\d+)_date",
+      # names_transform = list(index = as.integer),
+      values_to = "date",
+      values_drop_na = TRUE
+    ) 
+}
 
 cat("Derive `index` column for target_product_data\n")
-target_product_data <- target_product_data %>%
+target_product_data <- 
+  bind_rows(target_product_data) %>%
   group_by(patient_id) %>%
   arrange(date, .by_group = TRUE) %>%
   # use dense rank rather than min_rank because >1 vaccines on the same day is
@@ -50,14 +67,6 @@ target_product_data <- target_product_data %>%
   distinct()
 
 # any products with zero matches (this could flag a typo in the product name)
-vaccine_product_names <- readr::read_delim(
-  here::here("lib", "vaccine-product-names"), 
-  delim = ";", 
-  escape_double = FALSE,
-  trim_ws = TRUE
-  ) %>%
-  select(name, product_name)
-
 cat("Product names with zero matches in data:\n")
 target_product_data %>%
   group_by(descr) %>%
