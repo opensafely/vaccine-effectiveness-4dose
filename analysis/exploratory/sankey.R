@@ -2,11 +2,8 @@
 library(tidyverse)
 library(glue)
 
-# define functions
-roundmid_any <- function(x, to=1){
-  # like ceiling_any, but centers on (integer) midpoint of the rounding points
-  ceiling(x/to)*to - (floor(to/2)*(x!=0))
-}
+# source utility functions
+source(here::here("lib", "functions", "utility.R"))
 
 # import vaccine product names
 vaccine_product_names <- readr::read_delim(
@@ -20,6 +17,8 @@ vaccine_product_names <- readr::read_delim(
 # import extracted data
 extract <- arrow::read_feather(here::here("output", "exploratory", "extract", "input_exploratory.feather")) %>%
   mutate(across(ends_with("_date"), as.Date))
+
+extract %>% my_skim(path = here::here("output", "exploratory", "skim_extract.txt"))
 
 # extract and process target_disease_data
 target_disease_data <- extract %>%

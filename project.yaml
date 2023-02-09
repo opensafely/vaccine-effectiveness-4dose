@@ -29,7 +29,8 @@ actions:
     - extract_exploratory
     outputs:
       moderately_sensitive:
-        links: output/exploratory/links.csv
+        csv: output/exploratory/*.csv
+        txt: output/exploratory/*.txt
 
   ## #### End #### 
 

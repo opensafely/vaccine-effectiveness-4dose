@@ -129,7 +129,8 @@ actions_list <- splice(
       "extract_exploratory"
     ),
     moderately_sensitive = lst(
-      links = "output/exploratory/links.csv"
+      csv = "output/exploratory/*.csv",
+      txt = "output/exploratory/*.txt"
     )
   ),
 
