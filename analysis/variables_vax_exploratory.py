@@ -39,7 +39,8 @@ def generate_vax_variables(index_date, n):
       index_date = index_date,
       # for some reason vaccine_product_names["product_name"][i] not working,
       # so select product_name col by index
-      product_name_matches = vaccine_product_names.iloc[:,1][i]
+      # product_name_matches = vaccine_product_names.iloc[:,1][i]
+      product_name_matches = vaccine_product_names["product_name"]
     ))
 
   return vax_variables
