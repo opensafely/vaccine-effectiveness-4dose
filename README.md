@@ -1,5 +1,7 @@
 # vaccine-effectiveness-4dose
 
+:rotating_light: This repo is archived. Work on effectiveness of the autumn COVID-19 booster doses has moved to [booster-effectiveness-autumn-2022](https://github.com/opensafely/booster-effectiveness-autumn-2022) :rotating_light:
+
 [View on OpenSAFELY](https://jobs.opensafely.org/repo/https%253A%252F%252Fgithub.com%252Fopensafely%252Fvaccine-effectiveness-4dose)
 
 Details of the purpose and any published outputs from this project can be found at the link above.
